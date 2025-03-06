@@ -17,6 +17,7 @@ public class Category {
         return id;
     }
 
+
     public String getName() {
         return name;
     }
@@ -24,4 +25,15 @@ public class Category {
     public String getIcon() {
         return icon;
     }
+
+    @Override
+    public String toString() {
+        return "Category [id=" + id + ", name=" + name + ", icon=" + icon + "]";
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    
 }
