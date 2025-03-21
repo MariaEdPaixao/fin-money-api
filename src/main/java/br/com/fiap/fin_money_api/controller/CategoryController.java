@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.fiap.fin_money_api.repository.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +28,9 @@ import br.com.fiap.fin_money_api.model.Category;
 @RequestMapping("/categories")
 public class CategoryController {
     private Logger log = LoggerFactory.getLogger(getClass()); // objeto para log no terminal
-    private List<Category> repository = new ArrayList<>();
+
+    @Autowired // injeção de dependência
+    private CategoryRepository repository;
 
     // path: atributo padrão -> toda notação tem um atributo padrão, se fosse passar
     // 2 atributos precisaria do nome
@@ -34,7 +38,7 @@ public class CategoryController {
     // {RequestMethod.GET}) //notação -> mapeia requisições
     @GetMapping() // notação -> mapeia requisições do tipo get
     public List<Category> index() {
-        return repository;
+        return repository.findAll();
     }
 
     @PostMapping()
@@ -42,7 +46,7 @@ public class CategoryController {
     // notação que diz que o json virá do body e atribui com o objeto do Model
     public Category create(@RequestBody Category category) {
         log.info("Cadastrando categoria " + category.getName());
-        repository.add(category);
+        repository.save(category);
         return category;
     }
 
@@ -58,28 +62,26 @@ public class CategoryController {
     public ResponseEntity<Object> destroy(@PathVariable Long id){
         log.info("Apagando categoria: " + id);
 
-        repository.remove(getCategory(id));
+        repository.delete(getCategory(id));
         return ResponseEntity.noContent().build(); //delete: 204 - sucesso, porém sem corpo para retornar
     }
 
     //editar
     @PutMapping("{id}")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Category category) {
-        log.info("Atualizando categoria + " + id + " " + category);
- 
-        repository.remove(getCategory(id)); // tirando os dados antigos
+        log.info("Atualizando categoria + " + id + " com " + category);
+
+        getCategory(id);
         category.setId(id); // evitando que o id seja atualizado
-        repository.add(category); // adicionando os novos dados
+        repository.save(category); // adicionando os novos dados
         return ResponseEntity.ok(category);
     }
 
     //pega o primeiro, ou senão lança uma exceção
     private Category getCategory(Long id) {
-        // stream fluxo de dados, faz o fluxo e retorna ele, que pode ser consumido por
-        // outra função
-        // arrow function () -> | //devolverá uma stream
-        return repository.stream().filter(c -> c.getId().equals(id)).findFirst().orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
+        return repository.findById(id)
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
         // pega o primeiro ou, senão, lança uma exceção
     }
 }
