@@ -1,31 +1,24 @@
 package br.com.fiap.fin_money_api.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import br.com.fiap.fin_money_api.repository.CategoryRepository;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 // import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fiap.fin_money_api.model.Category;
 // a barra (/) é opcional
 @RestController // notação -> indica que essa classe seja um componente do spring
 @RequestMapping("/categories")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CategoryController {
     private Logger log = LoggerFactory.getLogger(getClass()); // objeto para log no terminal
 
@@ -44,10 +37,9 @@ public class CategoryController {
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     // notação que diz que o json virá do body e atribui com o objeto do Model
-    public Category create(@RequestBody Category category) {
+    public Category create(@RequestBody @Valid Category category) {
         log.info("Cadastrando categoria " + category.getName());
-        repository.save(category);
-        return category;
+        return repository.save(category);
     }
 
     @GetMapping("{id}")
@@ -68,7 +60,7 @@ public class CategoryController {
 
     //editar
     @PutMapping("{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Category category) {
+    public ResponseEntity<Object> update(@PathVariable @Valid Long id, @RequestBody Category category) {
         log.info("Atualizando categoria + " + id + " com " + category);
 
         getCategory(id);
