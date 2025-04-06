@@ -7,10 +7,16 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data // get, set, toString, equals
+@Builder //cria um construtor com parametros
+@NoArgsConstructor //cria um construtor sem parametros
+@AllArgsConstructor //incluindo ambos os construtores, tanto com parametros quanto sem
 public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

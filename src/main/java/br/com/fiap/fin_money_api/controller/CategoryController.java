@@ -3,10 +3,14 @@ package br.com.fiap.fin_money_api.controller;
 import java.util.List;
 
 import br.com.fiap.fin_money_api.repository.CategoryRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +34,15 @@ public class CategoryController {
     // @RequestMapping(produces = "application/json", path = "/categories", method =
     // {RequestMethod.GET}) //notação -> mapeia requisições
     @GetMapping() // notação -> mapeia requisições do tipo get
+    @Operation(summary = "Listar categorias", description = "Retorna um array com todas as categorias")
+    @Cacheable("categories")
     public List<Category> index() {
         return repository.findAll();
     }
 
     @PostMapping()
+    @CacheEvict(value = "categories", allEntries = true) //envalidar tudo que tinha no cache antes
+    @Operation(responses = @ApiResponse(responseCode = "400", description = "Validação falhou"), deprecated = true)
     @ResponseStatus(code = HttpStatus.CREATED)
     // notação que diz que o json virá do body e atribui com o objeto do Model
     public Category create(@RequestBody @Valid Category category) {
@@ -51,6 +59,7 @@ public class CategoryController {
 
     // apagar
     @DeleteMapping("{id}")
+    @CacheEvict(value = "categories", allEntries = true) //envalidar tudo que tinha no cache antes
     public ResponseEntity<Object> destroy(@PathVariable Long id){
         log.info("Apagando categoria: " + id);
 
@@ -60,6 +69,7 @@ public class CategoryController {
 
     //editar
     @PutMapping("{id}")
+    @CacheEvict(value = "categories", allEntries = true) //envalidar tudo que tinha no cache antes
     public ResponseEntity<Object> update(@PathVariable @Valid Long id, @RequestBody Category category) {
         log.info("Atualizando categoria + " + id + " com " + category);
 
