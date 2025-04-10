@@ -45,7 +45,7 @@ public class DatabaseSeeder {
             transactions.add(
                 Transaction.builder()
                     .description(descriptions.get(new Random().nextInt(descriptions.size())))
-                    .amount(BigDecimal.valueOf(new Random().nextDouble() + 500))
+                    .amount(BigDecimal.valueOf(new Random().nextDouble() * 500))
                     .date(LocalDate.now().minusDays(new Random().nextInt(30)))
                     .type(TransactionType.EXPENSE)
                     .category(categories.get(new Random().nextInt(categories.size())))
