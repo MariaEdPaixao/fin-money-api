@@ -6,6 +6,7 @@ import br.com.fiap.fin_money_api.repository.CategoryRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ import br.com.fiap.fin_money_api.model.Category;
 @RestController // notação -> indica que essa classe seja um componente do spring
 @RequestMapping("/categories")
 @CrossOrigin(origins = "http://localhost:3000")
+@Slf4j //substitui o log ->  private Logger log = LoggerFactory.getLogger(getClass()); // objeto para log no terminal
 public class CategoryController {
-    private Logger log = LoggerFactory.getLogger(getClass()); // objeto para log no terminal
 
     @Autowired // injeção de dependência
     private CategoryRepository repository;
