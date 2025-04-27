@@ -1,12 +1,9 @@
 package br.com.fiap.fin_money_api.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.fiap.fin_money_api.model.Transaction;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 //JpaSpecificationExecutor - também vai ter o findAll por especificação

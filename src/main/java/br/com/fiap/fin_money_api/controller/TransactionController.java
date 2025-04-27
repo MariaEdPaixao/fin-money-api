@@ -34,6 +34,7 @@ public class TransactionController {
 
         var specification = TransactionSpecification.withFilters(filters);
         return repository.findAll(specification,pageable);
+        // query methods
 //        if(description != null && date != null)
 //            return  repository.findByDescriptionContainingIgnoringCaseAndDate(description, date, pageable);
 //
