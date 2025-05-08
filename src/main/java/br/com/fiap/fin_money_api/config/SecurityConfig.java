@@ -21,7 +21,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(
                 auth -> auth
-                        .requestMatchers("/categories/**").hasRole("ADMIN")
+                        //.requestMatchers("/categories/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         )
                 .httpBasic(Customizer.withDefaults())
@@ -30,26 +30,27 @@ public class SecurityConfig {
     }
 
 //    serviço de localização de detalhes do usuário
-    @Bean
-    UserDetailsService userDetailsService(){
-        //build retorna um user details
-        var users = List.of(
-                User
-                        .withUsername("maria")
-                        .password("$2a$12$xGfQu2trsL147wwpww1a6.SoEkK6e.Mx0TUbapTpc2ryFfBRAFTIe")
-                        .roles("ADMIN")
-                        .build(),
-                User
-                        .withUsername("joao")
-                        .password("$2a$12$tFeb7kAzX.AGSn264fAnoO30IPrVxmducxPcHxqUMS2XHhOB0vLs6")
-                        .roles("USER")
-                        .build()
+    // @Bean
+    // UserDetailsService userDetailsService(){
+    //     //build retorna um user details
+    //     var users = List.of(
+    //             User
+    //                     .withUsername("maria")
+    //                     .password("$2a$12$xGfQu2trsL147wwpww1a6.SoEkK6e.Mx0TUbapTpc2ryFfBRAFTIe")
+    //                     .roles("ADMIN")
+    //                     .build(),
+    //             User
+    //                     .withUsername("joao")
+    //                     .password("$2a$12$tFeb7kAzX.AGSn264fAnoO30IPrVxmducxPcHxqUMS2XHhOB0vLs6")
+    //                     .roles("USER")
+    //                     .build()
 
-                // bff - backend or frontend
-        );
-        return new InMemoryUserDetailsManager(users);
-    }
+                 // bff - backend or frontend
+    //     );
+    //     return new InMemoryUserDetailsManager(users);
+    // }
 
+    // sempre que eu pedir "passwordEncoder" usará BCrypt
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

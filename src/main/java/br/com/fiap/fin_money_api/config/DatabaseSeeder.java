@@ -3,10 +3,13 @@ package br.com.fiap.fin_money_api.config;
 import br.com.fiap.fin_money_api.model.Category;
 import br.com.fiap.fin_money_api.model.Transaction;
 import br.com.fiap.fin_money_api.model.TransactionType;
+import br.com.fiap.fin_money_api.model.User;
 import br.com.fiap.fin_money_api.repository.CategoryRepository;
 import br.com.fiap.fin_money_api.repository.TransactionRepository;
+import br.com.fiap.fin_money_api.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -24,8 +27,20 @@ public class DatabaseSeeder {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostConstruct
     public void init() {
+        //criptografando a senha com o passwordEncoder
+        String password = passwordEncoder.encode("12345");
+
+        var joao = User.builder().email("joao@fiap.com.br").password(password).build();
+        var maria = User.builder().email("maria@fiap.com.br").password(password).build();
+        userRepository.saveAll(List.of(joao, maria));
 
         var categories = List.of(
                 Category.builder().name("Educação").icon("Book").build(),
