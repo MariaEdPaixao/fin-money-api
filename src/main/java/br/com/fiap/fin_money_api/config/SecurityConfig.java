@@ -24,6 +24,7 @@ public class SecurityConfig {
                         //.requestMatchers("/categories/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         )
+                .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .build();
         //mantém a autenticação básica, só mudando algumas customizações
