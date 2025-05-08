@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.fiap.fin_money_api.model.Transaction;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.time.LocalDate;
 //JpaSpecificationExecutor - também vai ter o findAll por especificação
 public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
 
