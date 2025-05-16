@@ -3,6 +3,7 @@ package br.com.fiap.fin_money_api.model;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +17,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users") //altero os parametros que o jpa vai usar pra criar a tabela
@@ -27,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(of = "id") // faça o equals do id, e nao de todos os campos
 public class User implements UserDetails {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
